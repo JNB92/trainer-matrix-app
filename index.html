@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" xintegrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoVBL5gI9kLmbG0CbnwFDEr4X1HarA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://apis.google.com/js/api.js"></script>
     <!-- Chosen Palette: Warm Neutrals (bg-stone-50, bg-white, accent: teal) -->
     <!-- Application Structure Plan: A task-oriented single-page application. Added Google Sign-In for client-side authorization. -->
     <!-- Visualization & Content Choices: The key export feature is now "Save to Google Drive". This uses the Google API Client Library for JavaScript (gapi) to handle OAuth2 and the Google Drive API. On save, it generates a PDF in-memory and uploads it directly to the user's Drive, providing a native experience. The PDF download is kept as a fallback. -->
@@ -45,7 +44,7 @@
                     <a href="#overview" class="font-medium text-stone-600 hover:text-teal-600 transition-colors">Overview</a>
                     <a href="#part-a" class="font-medium text-stone-600 hover:text-teal-600 transition-colors">Part A: Profile</a>
                     <a href="#part-b" class="font-medium text-stone-600 hover:text-teal-600 transition-colors">Part B: Unit Mapping</a>
-                    <button id="auth-button" class="ml-4 px-3 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700">Sign in & Authorize</button>
+                    <button id="auth-button" class="ml-4 px-3 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 disabled:bg-stone-400 disabled:cursor-wait" disabled>Sign in & Authorize</button>
                     <div id="user-info" class="ml-4 hidden items-center">
                         <p id="user-name" class="text-sm font-medium text-stone-700"></p>
                         <button id="signout-button" class="ml-2 text-xs text-stone-500 hover:text-red-600">Sign out</button>
@@ -156,7 +155,7 @@
                 </div>
             </div>
             <div class="p-4 bg-stone-50 border-t flex justify-end space-x-3">
-                 <button id="save-gdrive-button" class="px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 disabled:bg-stone-400 disabled:cursor-not-allowed">Save to Google Drive</button>
+                 <button id="save-gdrive-button" class="px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 disabled:bg-stone-400 disabled:cursor-not-allowed" disabled>Save to Google Drive</button>
                  <button id="export-pdf-button" class="px-4 py-2 border border-stone-300 text-sm font-medium rounded-md text-stone-700 bg-white hover:bg-stone-50">Download as PDF</button>
                 <button id="close-modal-button" class="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-stone-600 hover:bg-stone-700">Close</button>
             </div>
@@ -204,6 +203,7 @@
             
             let tokenClient;
             let gapiInited = false;
+            let gisInited = false;
 
             const authButton = document.getElementById('auth-button');
             const signoutButton = document.getElementById('signout-button');
@@ -216,14 +216,16 @@
             }
 
             async function initializeGapiClient() {
+                // Use gapi.client.load for more robust initialization
                 try {
-                    await gapi.client.init({
-                        apiKey: API_KEY,
-                        discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"],
-                    });
+                    await gapi.client.init({ apiKey: API_KEY });
+                    await gapi.client.load('https://www.googleapis.com/discovery/v1/apis/drive/v3/rest');
                     gapiInited = true;
+                    checkAuthReady();
                 } catch (e) {
                     console.error("Error initializing GAPI client:", e);
+                    authButton.innerText = "API Error. Refresh.";
+                    authButton.classList.add('bg-red-500', 'hover:bg-red-600');
                 }
             }
 
@@ -233,6 +235,15 @@
                     scope: SCOPES,
                     callback: '', // defined later
                 });
+                gisInited = true;
+                checkAuthReady();
+            }
+            
+            function checkAuthReady() {
+                if (gapiInited && gisInited) {
+                    authButton.disabled = false;
+                    authButton.classList.remove('disabled:cursor-wait');
+                }
             }
             
             const gapiScript = document.createElement('script');
@@ -250,14 +261,10 @@
             document.body.appendChild(gisScript);
 
             authButton.onclick = () => {
-                if (!gapiInited) {
-                    alert("Google API not yet loaded. Please wait a moment and try again.");
-                    return;
-                }
                 tokenClient.callback = async (resp) => {
                     if (resp.error !== undefined) {
                         console.error('Auth Error:', resp);
-                        throw (resp);
+                        return;
                     }
                     authButton.classList.add('hidden');
                     userInfoDiv.classList.remove('hidden');
@@ -482,7 +489,7 @@
                         const fileData = reader.result;
                         const multipartRequestBody =
                             delimiter +
-                            'Content-Type: application/json\r\n\r\n' +
+                            'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
                             JSON.stringify(metadata) +
                             delimiter +
                             'Content-Type: application/pdf\r\n' +
