@@ -216,7 +216,6 @@
             }
 
             async function initializeGapiClient() {
-                // Use gapi.client.load for more robust initialization
                 try {
                     await gapi.client.init({ apiKey: API_KEY });
                     await gapi.client.load('https://www.googleapis.com/discovery/v1/apis/drive/v3/rest');
@@ -224,19 +223,29 @@
                     checkAuthReady();
                 } catch (e) {
                     console.error("Error initializing GAPI client:", e);
-                    authButton.innerText = "API Error. Refresh.";
-                    authButton.classList.add('bg-red-500', 'hover:bg-red-600');
+                    authButton.innerText = "API Error";
+                    authButton.title = e.message;
+                    authButton.classList.remove('bg-teal-600', 'hover:bg-teal-700');
+                    authButton.classList.add('bg-red-500');
                 }
             }
 
             function gisLoaded() {
-                tokenClient = google.accounts.oauth2.initTokenClient({
-                    client_id: CLIENT_ID,
-                    scope: SCOPES,
-                    callback: '', // defined later
-                });
-                gisInited = true;
-                checkAuthReady();
+                try {
+                    tokenClient = google.accounts.oauth2.initTokenClient({
+                        client_id: CLIENT_ID,
+                        scope: SCOPES,
+                        callback: '', // defined later
+                    });
+                    gisInited = true;
+                    checkAuthReady();
+                } catch(e) {
+                    console.error("Error initializing GIS client:", e);
+                    authButton.innerText = "Config Error";
+                    authButton.title = "Could not initialize Google Sign-In. Check Client ID.";
+                    authButton.classList.remove('bg-teal-600', 'hover:bg-teal-700');
+                    authButton.classList.add('bg-red-500');
+                }
             }
             
             function checkAuthReady() {
@@ -289,12 +298,13 @@
             signoutButton.onclick = () => {
                 const token = gapi.client.getToken();
                 if (token !== null) {
-                    google.accounts.oauth2.revoke(token.access_token);
-                    gapi.client.setToken('');
-                    authButton.classList.remove('hidden');
-                    userInfoDiv.classList.add('hidden');
-                    gdriveButton.disabled = true;
-                    userNameEl.textContent = '';
+                    google.accounts.oauth2.revoke(token.access_token, () => {
+                        gapi.client.setToken('');
+                        authButton.classList.remove('hidden');
+                        userInfoDiv.classList.add('hidden');
+                        gdriveButton.disabled = true;
+                        userNameEl.textContent = '';
+                    });
                 }
             };
             // --- End Google API ---
