@@ -13,10 +13,12 @@
     <!-- Visualization & Content Choices: The key export feature is now "Save to Google Drive". This uses the Google Identity Services (GIS) library for auth tokens and the native Fetch API for uploads, providing a robust and modern experience. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
         body {
             font-family: 'Inter', sans-serif;
         }
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
         details > summary {
             list-style: none;
         }
@@ -69,7 +71,7 @@
                 <a href="#overview" class="font-medium text-stone-600 hover:text-teal-600 transition-colors">Overview</a>
                 <a href="#part-a" class="font-medium text-stone-600 hover:text-teal-600 transition-colors">Part A: Profile</a>
                 <a href="#part-b" class="font-medium text-stone-600 hover:text-teal-600 transition-colors">Part B: Unit Mapping</a>
-                <button id="auth-button" class="ml-4 px-3 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-bca-red hover:bg-opacity-80 disabled:bg-stone-400 disabled:cursor-wait" disabled>Sign in & Authorize</button>
+                <button id="auth-button" class="ml-4 px-3 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-bca-red hover:bg-opacity-80 disabled:bg-stone-400 disabled:cursor-wait" disabled>Sign in & Authorise</button>
                 <div id="user-info" class="ml-4 hidden items-center">
                     <p id="user-name" class="text-sm font-medium text-stone-700"></p>
                     <button id="signout-button" class="ml-2 text-xs text-stone-500 hover:text-red-600">Sign out</button>
@@ -117,7 +119,7 @@
                         <span class="arrow text-bca-gold">▼</span>
                     </summary>
                     <div class="mt-4 text-stone-600 space-y-2">
-                        <p>1. Click <strong>"Sign in & Authorize"</strong> in the header and follow the prompts from Google.</p>
+                        <p>1. Click <strong>"Sign in & Authorise"</strong> in the header and follow the prompts from Google.</p>
                         <p>2. Complete the form below.</p>
                         <p>3. Click <strong>"Finalise & Export"</strong>, and then <strong>"Save to Google Drive"</strong>.
                         <p>The completed PDF will be saved directly to the <strong>"My Drive"</strong> section of your <strong>Google Drive</strong>.</p>
@@ -378,7 +380,7 @@
                 authButton.disabled = false;
                 authButton.classList.remove('disabled:cursor-wait');
             } catch(e) {
-                console.error("Error initializing GIS client:", e);
+                console.error("Error initialising GIS client:", e);
                 authButton.innerText = "Config Error";
                 authButton.title = "Could not initialize Google Sign-In. Check Client ID.";
                 authButton.classList.remove('bg-teal-600', 'hover:bg-teal-700');
