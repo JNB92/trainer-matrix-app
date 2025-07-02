@@ -8,10 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" xintegrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoVBL5gI9kLmbG0CbnwFDEr4X1HarA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <!-- Chosen Palette: Warm Neutrals (bg-stone-50, bg-white, accent: teal) -->
-    <!-- Application Structure Plan: A task-oriented single-page application. Added Google Sign-In for client-side authorization. -->
-    <!-- Visualization & Content Choices: The key export feature is now "Save to Google Drive". This uses the Google Identity Services (GIS) library for auth tokens and the native Fetch API for uploads, providing a robust and modern experience. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
@@ -32,6 +29,8 @@
             transition: transform 0.2s;
         }
     </style>
+    
+    
     <!-- Google Fonts Import -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,6 +55,7 @@
             }
         }
     </script>
+    
 </head>
 <body class="bg-bca-soft-white text-stone-800 font-roboto">
 
@@ -164,23 +164,23 @@
             <h3 class="text-xl font-semibold text-stone-800 mb-4">2. Vocational Qualifications & Industry Experience</h3>
             <div class="overflow-x-auto"><table class="w-full">
                 <thead class="bg-stone-50"><tr><th class="p-3 text-left text-sm font-semibold text-stone-600">Qualification Name</th><th class="p-3 text-left text-sm font-semibold text-stone-600">Awarding Provider</th><th class="p-3 text-left text-sm font-semibold text-stone-600">Date Awarded</th><th class="p-3"></th></tr></thead>
-                <tbody id="qualifications-body"></tbody></table><button id="add-qualification" class="mt-2 text-sm text-bca-gold hover:text-opacity-80 font-medium" data-save>+ Add Qualification</button></div>
+                <tbody id="qualifications-body"></tbody></table><button id="add-qualification" class="mt-2 text-sm text-bca-gold hover:text-opacity-80 font-medium">+ Add Qualification</button></div>
             <div class="mt-6 overflow-x-auto">
                 <table class="w-full">
                     <thead class="bg-stone-50"><tr><th class="p-3 text-left text-sm font-semibold text-stone-600">Role / Position</th><th class="p-3 text-left text-sm font-semibold text-stone-600">Employer</th><th class="p-3 text-left text-sm font-semibold text-stone-600">Duration</th><th class="p-3"></th></tr></thead>
-                    <tbody id="experience-body" data-save></tbody>
+                    <tbody id="experience-body"></tbody>
                 </table>
-                <button id="add-experience" class="mt-2 text-sm text-bca-gold hover:text-opacity-80 font-medium" data-save>+ Add Industry Experience</button></div>
+                <button id="add-experience" class="mt-2 text-sm text-bca-gold hover:text-opacity-80 font-medium">+ Add Industry Experience</button></div>
             <hr class="my-8">
             <h3 class="text-xl font-semibold text-stone-800 mb-4">3. Ongoing Industry Engagement & Currency</h3>
             <div class="overflow-x-auto"><table class="w-full">
                 <thead class="bg-stone-50"><tr><th class="p-3 text-left text-sm font-semibold text-stone-600">Activity Type</th><th class="p-3 text-left text-sm font-semibold text-stone-600">Description</th><th class="p-3 text-left text-sm font-semibold text-stone-600">Date(s)</th><th class="p-3 text-left text-sm font-semibold text-stone-600">Impact on Practice</th><th class="p-3"></th></tr></thead>
-                <tbody id="engagement-body"></tbody></table><button id="add-engagement" class="mt-2 text-sm text-bca-gold hover:text-opacity-80 font-medium" data-save>+ Add Engagement Activity</button></div>
+                <tbody id="engagement-body"></tbody></table><button id="add-engagement" class="mt-2 text-sm text-bca-gold hover:text-opacity-80 font-medium" >+ Add Engagement Activity</button></div>
             <hr class="my-8">
             <h3 class="text-xl font-semibold text-stone-800 mb-4">4. VET Professional Development</h3>
             <div class="overflow-x-auto"><table class="w-full">
-                <thead class="bg-stone-50"><tr><th class="p-3 text-left text-sm font-semibold text-stone-600">Activity Type</th><th class="p-3 text-left text-sm font-semibold text-stone-600">Description</th><th class="p-3 text-left text-sm font-semibold text-stone-600">Date(s)</th><th class="p-3 text-left text-sm font-semibold text-stone-600">Impact on VET Practice</th><th class="p-3"></th></tr></thead>
-                <tbody id="vet-pd-body"></tbody></table><button id="add-vet-pd" class="mt-2 text-sm text-bca-gold hover:text-opacity-80 font-medium" data-save>+ Add VET PD Activity</button></div>
+                <thead class="bg-stone-50"><tr><th class="p-3 text-left text-sm font-semibold text-stone-600">Activity Type</th><th class="p-3 text-left text-sm font-semibold text-stone-600">Description</th><th class="p-3 text-left text-sm font-semibold text-stone-600">Date(s)</th><th class="p-3 text-left text-sm font-semibold text-stone-600" >Impact on VET Practice</th><th class="p-3"></th></tr></thead>
+                <tbody id="vet-pd-body"></tbody></table><button id="add-vet-pd" class="mt-2 text-sm text-bca-gold hover:text-opacity-80 font-medium" >+ Add VET PD Activity</button></div>
             <hr class="my-8">
             <h3 class="text-xl font-semibold text-stone-800 mb-4">5. Trainer Reflective Statement</h3>
             <div>
@@ -228,13 +228,15 @@
     </div>
 </div>
 
+
 <template id="unit-card-template">
-    <div class="bg-white p-6 rounded-lg shadow-sm unit-card">
-        <div class="flex justify-between items-start"><input type="text" placeholder="Unit Code and Name, e.g., BSBXCM401" class="unit-title text-lg font-semibold text-stone-800 w-full focus:focus:border-bca-gold bg-transparent"><button class="text-stone-400 hover:text-red-500 remove-unit-button">&times; Remove</button></div><hr class="my-4">
+    <div class="bg-white p-6 rounded-lg shadow-sm unit-card"  data-save-group>
+        <div class="flex justify-between items-start"><input type="text" placeholder="Unit Code and Name, e.g., BSBXCM401" class="unit-title text-lg font-semibold text-stone-800 w-full focus:focus:border-bca-gold bg-transparent">
+            <button class="text-stone-400 hover:text-red-500 remove-unit-button">&times; Remove</button></div><hr class="my-4">
         <div class="space-y-6">
-            <div><h4 class="font-semibold text-stone-800">1. Evidence of Vocational Competency</h4><textarea rows="3" class="voc-comp-evidence mt-1 block w-full rounded-md border border-stone-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="e.g., I hold this unit of competency..."></textarea></div>
-            <div><h4 class="font-semibold text-stone-800">2. Confirmation of Current Industry Skills</h4><textarea rows="3" class="ind-skills-evidence mt-1 block w-full rounded-md border border-stone-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Explain how recent industry engagement keeps you current..."></textarea></div>
-            <div><h4 class="font-semibold text-stone-800">3. Confirmation of Current VET Knowledge & Skills</h4><textarea rows="3" class="vet-skills-evidence mt-1 block w-full rounded-md border border-stone-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Explain how recent VET PD has been applied..."></textarea></div>
+            <div><h4 class="font-semibold text-stone-800">1. Evidence of Vocational Competency</h4><textarea rows="3" class="voc-comp-evidence mt-1 block w-full rounded-md border border-stone-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="e.g., I hold this unit of competency..." data-save></textarea></div>
+            <div><h4 class="font-semibold text-stone-800">2. Confirmation of Current Industry Skills</h4><textarea rows="3" class="ind-skills-evidence mt-1 block w-full rounded-md border border-stone-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Explain how recent industry engagement keeps you current..." data-save></textarea></div>
+            <div><h4 class="font-semibold text-stone-800">3. Confirmation of Current VET Knowledge & Skills</h4><textarea rows="3" class="vet-skills-evidence mt-1 block w-full rounded-md border border-stone-300 shadow-sm focus:border-teal-500 focus:ring-teal-500" placeholder="Explain how recent VET PD has been applied..." data-save></textarea></div>
         </div>
     </div>
 </template>
@@ -324,13 +326,26 @@
                 for(const tableId in state.tables) {
                     const tbody = document.getElementById(tableId);
                     if (!tbody) continue;
-                    const templateId = tbody.closest('table').nextElementSibling.id.includes('wide') ? 'table-row-template-wide' : 'table-row-template';
+
+                    // Determine which template to use based on the table
+                    let templateId;
+                    if (tableId === 'engagement-body' || tableId === 'vet-pd-body') {
+                        templateId = 'table-row-template-wide';
+                    } else {
+                        templateId = 'table-row-template';
+                    }
                     const template = document.getElementById(templateId);
+                    if (!template) continue;
+
+                    // Clear existing rows before loading
+                    tbody.innerHTML = '';
 
                     state.tables[tableId].forEach(rowData => {
                         const newRow = template.content.cloneNode(true);
                         newRow.querySelectorAll('[data-save]').forEach((input, index) => {
-                            input.value = rowData[index] || '';
+                            if(rowData[index] !== undefined) {
+                                input.value = rowData[index];
+                            }
                         });
                         tbody.appendChild(newRow);
                     });
