@@ -358,7 +358,7 @@
 
         function getFormState() {
             const state = { staticFields: {}, tables: {}, unitCards: [] };
-            document.querySelectorAll('[data-save]').forEach(el => {
+            document.querySelectorAll('[data-save]:not([data-save-group] [data-save])').forEach(el => {
                 const id = el.id || el.name;
                 if (el.type === 'radio' || el.type === 'checkbox') {
                     if (!state.staticFields[id]) state.staticFields[id] = [];
